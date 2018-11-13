@@ -13,7 +13,7 @@ class HammingAnn
 public:
     HammingAnn(size_t inputSize, size_t memorySize);
 
-    void learn(const std::vector<vec> &samples);
+    bool learn(const std::vector<vec> &samples);
     vec recognize(const vec &sample);
 
 private:
