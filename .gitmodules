@@ -1,3 +1,6 @@
 [submodule "src/ann_classes"]
 	path = src/ann_classes
 	url = git@github.com:Asset34/ann_classes.git
+[submodule "src/ui/SignedImageList_view_model"]
+	path = src/ui/SignedImageList_view_model
+	url = git@github.com:Asset34/SignedImageList_view_model.git
