@@ -16,7 +16,8 @@ SOURCES += src/main.cpp \
     src/ui/SignedImageList_view_model/signedimagelistmodel.cpp \
     src/ui/SignedImageList_view_model/signedimagetableproxymodel.cpp \
     src/ui/SignedImageList_view_model/signedimageitemdelegate.cpp \
-    src/ui/SignedImageList_view_model/signedimagelistwidget.cpp
+    src/ui/SignedImageList_view_model/signedimagelistwidget.cpp \
+    src/ui/image_drawer/ImageDrawer.cpp
 
 HEADERS += \
     src/hammingann.hpp \
@@ -29,4 +30,5 @@ HEADERS += \
     src/ui/SignedImageList_view_model/signedimagelistmodel.hpp \
     src/ui/SignedImageList_view_model/signedimagetableproxymodel.hpp \
     src/ui/SignedImageList_view_model/signedimageitemdelegate.hpp \
-    src/ui/SignedImageList_view_model/signedimagelistwidget.hpp
+    src/ui/SignedImageList_view_model/signedimagelistwidget.hpp \
+    src/ui/image_drawer/ImageDrawer.hpp
