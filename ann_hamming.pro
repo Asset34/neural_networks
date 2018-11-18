@@ -7,28 +7,34 @@ TEMPLATE = app
 
 SOURCES += src/main.cpp \
     src/hammingann.cpp \
-    src/utills/vecutills.cpp \
-    src/ann_classes/synapse.cpp \
-    src/ann_classes/neuron.cpp \
-    src/ann_classes/inputneuron.cpp \
-    src/ann_classes/layer.cpp \
-    src/ann_classes/inputlayer.cpp \
+    src/neural_network_classes/synapse.cpp \
+    src/neural_network_classes/neuron.cpp \
+    src/neural_network_classes/inputneuron.cpp \
+    src/neural_network_classes/layer.cpp \
+    src/neural_network_classes/inputlayer.cpp \
     src/ui/SignedImageList_view_model/signedimagelistmodel.cpp \
     src/ui/SignedImageList_view_model/signedimagetableproxymodel.cpp \
     src/ui/SignedImageList_view_model/signedimageitemdelegate.cpp \
     src/ui/SignedImageList_view_model/signedimagetablewidget.cpp \
-    src/ui/image_drawer/ImageDrawer.cpp
+    src/ui/image_drawer/ImageDrawer.cpp \
+    src/ui/mainwindow.cpp \
+    src/utills/convertions.cpp \
+    src/utills/utills.cpp
 
 HEADERS += \
     src/hammingann.hpp \
-    src/utills/vecutills.hpp \
-    src/ann_classes/entities.hpp \
-    src/ann_classes/neuron.hpp \
-    src/ann_classes/inputneuron.hpp \
-    src/ann_classes/layer.hpp \
-    src/ann_classes/inputlayer.hpp \
+    src/neural_network_classes/entities.hpp \
+    src/neural_network_classes/neuron.hpp \
+    src/neural_network_classes/inputneuron.hpp \
+    src/neural_network_classes/layer.hpp \
+    src/neural_network_classes/inputlayer.hpp \
     src/ui/SignedImageList_view_model/signedimagelistmodel.hpp \
     src/ui/SignedImageList_view_model/signedimagetableproxymodel.hpp \
     src/ui/SignedImageList_view_model/signedimageitemdelegate.hpp \
     src/ui/SignedImageList_view_model/signedimagetablewidget.hpp \
-    src/ui/image_drawer/ImageDrawer.hpp
+    src/ui/image_drawer/ImageDrawer.hpp \
+    src/ui/mainwindow.hpp \
+    src/utills/convertions.hpp \
+    src/utills/utills.hpp
+
+INCLUDEPATH += $$PWD/src
