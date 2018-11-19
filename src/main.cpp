@@ -1,10 +1,14 @@
-#include <iostream>
+#include <QApplication>
 
-#include <neuron.hpp>
+#include "ui/mainwindow.hpp"
 
-int main()
+int main(int argc, char **argv)
 {
-    Neuron neuron();
+    QApplication app(argc, argv);
 
-    return 0;
+    MainWindow window;
+    window.resize(1200, 600);
+    window.show();
+
+    return app.exec();
 }

@@ -2,8 +2,6 @@
 
 #include <cmath>
 
-#include <QDebug>
-
 HammingNetwork::HammingNetwork(size_t inputSize, size_t memorySize)
     : m_inputSize(inputSize),
       m_memorySize(memorySize),
