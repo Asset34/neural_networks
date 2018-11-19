@@ -41,6 +41,7 @@ HammingNetwork::HammingNetwork(size_t inputSize, size_t memorySize)
     );
 
     // Init weights
+
     WeightMat w_inputMemory(memorySize, WeightVec(inputSize));
     WeightVec w_memory(memorySize, 1.0);
     WeightVec w_maxnet(memorySize, 1.0);
@@ -70,12 +71,6 @@ bool HammingNetwork::learn(const std::vector<std::vector<double>> &samples)
     }
 
     // Compute weight matrix
-//    WeightMat weights(m_inputSize, WeightVec(m_memorySize));
-//    for (size_t i = 0; i < m_memorySize; i++) {
-//        for (size_t j = 0; j < m_inputSize; j++)
-//            weights[j][i] = samples[i][j] / 2.0;
-//    }
-
     WeightMat weights(m_memorySize, WeightVec(m_inputSize));
     for (size_t i = 0; i < m_memorySize; i++) {
         for (size_t j = 0; j < m_inputSize; j++) {
@@ -84,15 +79,16 @@ bool HammingNetwork::learn(const std::vector<std::vector<double>> &samples)
     }
 
     // Set weights
-    m_inputLayer.setWeights(weights);
+    m_memoryLayer.setWeights(weights);
 
     return true;
 }
 
-std::vector<double> HammingNetwork::recognize(const std::vector<double> &sample)
+std::tuple<std::vector<double>, bool> HammingNetwork::recognize(
+        const std::vector<double> &sample)
 {
-    if (sample.size() < m_inputSize) {
-        return std::vector<double>(m_memorySize, 0.0);
+    if (sample.size() != m_inputSize) {
+        return std::make_tuple(std::vector<double>(m_memorySize, 0.0), false);
     }
 
     // Reset
@@ -122,15 +118,13 @@ std::vector<double> HammingNetwork::recognize(const std::vector<double> &sample)
 
         prev = cur;
         cur = m_maxnetLayer.getOutputs();
-
-        qDebug() << m_maxnetLayer.getOutputs();
     }
     while (!Utills::compare(prev, cur, m_accuracy));
 
     // Move output layer
     m_outputLayer.move();
 
-    return m_outputLayer.getOutputs();
+    return std::make_tuple(m_outputLayer.getOutputs(), true);
 }
 
 void HammingNetwork::enableTransition()
@@ -149,41 +143,3 @@ void HammingNetwork::reset()
 {
     m_maxnetLayer.reset();
 }
-
-//std::vector<double> HammingNetwork::recognize(const std::vector<double> &sample)
-//{
-//    if (sample.size() < m_inputSize) {
-//        return vec(m_memorySize, 0.0);
-//    }
-
-//    // Move input layer
-//    m_inputLayer.setInputs(sample);
-//    m_inputLayer.move();
-
-//    // Move memory layer
-//    m_memoryLayer.move();
-
-//    // Initial move of maxnet layer
-//    m_maxnetLayer.move();
-
-//    // Disconnect memory layer from maxnet layer
-//    mat w(m_memorySize, {0.0});
-//    m_memoryLayer.setOutputWeights(w);
-
-//    // Maxnet's competition
-//    std::vector<double> prev(m_memorySize);
-//    std::vector<double> cur = m_maxnetLayer.getOutputs();
-//    while(!VecUtills::compare(prev, cur, m_accuracy)) {
-//        m_maxnetLayer.move();
-
-//        prev = cur;
-//        cur = m_maxnetLayer.getOutputs();
-
-//        qDebug() << m_maxnetLayer.getOutputs();
-//    }
-
-//    // Move output layer
-//    m_outputLayer.move();
-
-//    return m_outputLayer.getOutputs();
-//}

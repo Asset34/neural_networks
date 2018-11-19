@@ -1,6 +1,8 @@
 #ifndef HAMMINGNETWORK_HPP
 #define HAMMINGNETWORK_HPP
 
+#include <tuple>
+
 #include <neural_network_classes/entities.hpp>
 #include <neural_network_classes/neuron.hpp>
 #include <neural_network_classes/inputneuron.hpp>
@@ -15,7 +17,7 @@ public:
     HammingNetwork(size_t inputSize, size_t memorySize);
 
     bool learn(const std::vector<std::vector<double>> &samples);
-    std::vector<double> recognize(const std::vector<double> &sample);
+    std::tuple<std::vector<double>, bool> recognize(const std::vector<double> &sample);
 
 private:
     void enableTransition();
