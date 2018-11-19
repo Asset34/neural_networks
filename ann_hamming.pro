@@ -6,7 +6,6 @@ TARGET = ann_hamming
 TEMPLATE = app
 
 SOURCES += src/main.cpp \
-    src/hammingann.cpp \
     src/neural_network_classes/synapse.cpp \
     src/neural_network_classes/neuron.cpp \
     src/neural_network_classes/inputneuron.cpp \
@@ -21,10 +20,10 @@ SOURCES += src/main.cpp \
     src/ui/image_drawer/ImageDrawerWidget.cpp \
     src/ui/mainwindow.cpp \
     src/utills/convertions.cpp \
-    src/utills/utills.cpp
+    src/utills/utills.cpp \
+    src/hammingnetwork.cpp
 
 HEADERS += \
-    src/hammingann.hpp \
     src/neural_network_classes/entities.hpp \
     src/neural_network_classes/neuron.hpp \
     src/neural_network_classes/inputneuron.hpp \
@@ -39,6 +38,7 @@ HEADERS += \
     src/ui/image_drawer/ImageDrawerWidget.hpp \
     src/ui/mainwindow.hpp \
     src/utills/convertions.hpp \
-    src/utills/utills.hpp
+    src/utills/utills.hpp \
+    src/hammingnetwork.hpp
 
 INCLUDEPATH += $$PWD/src
