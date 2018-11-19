@@ -18,6 +18,7 @@ SOURCES += src/main.cpp \
     src/ui/SignedImageList_view_model/signedimagetablewidget.cpp \
     src/ui/SignedImageList_view_model/signedimagetablemanager.cpp \
     src/ui/image_drawer/ImageDrawer.cpp \
+    src/ui/image_drawer/ImageDrawerWidget.cpp \
     src/ui/mainwindow.cpp \
     src/utills/convertions.cpp \
     src/utills/utills.cpp
@@ -35,6 +36,7 @@ HEADERS += \
     src/ui/SignedImageList_view_model/signedimagetablewidget.hpp \
     src/ui/SignedImageList_view_model/signedimagetablemanager.hpp \
     src/ui/image_drawer/ImageDrawer.hpp \
+    src/ui/image_drawer/ImageDrawerWidget.hpp \
     src/ui/mainwindow.hpp \
     src/utills/convertions.hpp \
     src/utills/utills.hpp
