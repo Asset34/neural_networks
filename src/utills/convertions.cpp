@@ -4,22 +4,24 @@ namespace Convertions {
 
 std::vector<double> toBipolarVector(const QImage &image)
 {
-    // Convert image to grayscale format
+    // Convert image to monochrome format
     QImage convertedImage;
-    if (image.format() != QImage::Format_Grayscale8) {
-        convertedImage = image.convertToFormat(QImage::Format_Grayscale8);
+    if (image.format() != QImage::Format::Format_Mono) {
+        convertedImage = image.convertToFormat(QImage::Format::Format_Mono);
     }
     else {
         convertedImage = image;
     }
 
-    // Get bipolar vector from converted image
-    int pixelCount = convertedImage.width() * convertedImage.height();
-    std::vector<double> bipolar(pixelCount);
-
-    uchar *bits = convertedImage.bits();
-    for (int i = 0; i < pixelCount; i++) {
-        bipolar[i] = (bits[i] == 0) ? -1.0 : 1.0;
+    // Create bipolar vector
+    std::vector<double> bipolar;
+    bipolar.reserve(convertedImage.width() * convertedImage.height());
+    bool isWhite;
+    for (int i = 0; i < convertedImage.height(); i++) {
+        for (int j = 0; j < convertedImage.width(); j++) {
+            isWhite = (convertedImage.pixelColor(j, i) == Qt::GlobalColor::white);
+            bipolar.push_back(isWhite ? -1.0 : 1.0);
+        }
     }
 
     return bipolar;
