@@ -8,26 +8,31 @@
 #include <neural_network_classes/inputneuron.hpp>
 #include <neural_network_classes/layer.hpp>
 #include <neural_network_classes/inputlayer.hpp>
+#include <neural_network_classes/neuralnetwork.hpp>
 
 #include "utills/utills.hpp"
 
-class HammingNetwork
+class HammingNetwork : public NeuralNetwork
 {
 public:
     HammingNetwork(size_t inputSize, size_t memorySize);
 
-    bool learn(const std::vector<std::vector<double>> &samples);
-    std::tuple<std::vector<double>, bool> recognize(const std::vector<double> &sample);
+    virtual std::string getName() const override;
+
+    virtual bool learn(const std::vector<LearnUnit> &samples) override;
+    virtual std::tuple<std::vector<double>, bool> recognize(const std::vector<double> &sample) override;
+
+    virtual void rebuild(size_t inputSize, size_t memorySize) override;
 
 private:
-    void enableTransition();
-    void disableTransition();
+    void setParameters();
+    void setActivationFuncs();
+    void buildConnections();
+
+    void enableTransitionToMaxnet();
+    void disableTransitionToMaxnet();
 
     void reset();
-
-    /* Sizes */
-    size_t m_inputSize;
-    size_t m_memorySize;
 
     /* Layers */
     InputLayer m_inputLayer;
