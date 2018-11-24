@@ -5,10 +5,13 @@
 
 #include <QHBoxLayout>
 #include <QVBoxLayout>
+
 #include <QLabel>
 #include <QPushButton>
+
 #include <QMenu>
 #include <QAction>
+#include <QActionGroup>
 
 #include <neural_network_classes/neuralnetwork.hpp>
 
@@ -26,6 +29,7 @@ public:
 private:
     QString buildResultString(const QVector<int> indexes);
 
+    void setNetworkStatus();
     void setNetworkStatus(size_t inputSize, size_t memorySize);
     void setOperationStatus(const QString &status);
 
@@ -41,8 +45,12 @@ private:
     QMenu *m_networkMenu;
     QMenu *m_sampleMenu;
 
+    QAction *m_hammingNetworkAct;
+    QAction *m_hebbianNetworkAct;
     QAction *m_learnNetworkAct;
     QAction *m_recognizeSampleAct;
+
+    QActionGroup *m_networksActGroup;
 
     SignedImageTableManager *m_tableManager;
     ImageDrawerWidget *m_drawer;
@@ -58,6 +66,8 @@ private slots:
     void learn();
     void recognize();
 
+    void setHammingNetwork();
+    void setHebbianNetwork();
 };
 
 #endif // MAINWINDOW_HPP

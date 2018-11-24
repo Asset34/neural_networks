@@ -7,6 +7,7 @@
 #include <tuple>
 
 #include "hammingnetwork.hpp"
+#include "hebbiannetwork.hpp"
 
 #include "../utills/convertions.hpp"
 #include "../utills/utills.hpp"
@@ -43,9 +44,9 @@ MainWindow::MainWindow(QWidget *parent)
     m_mainLayout->addWidget(m_drawer);
 
     // Create status bar labels
-    m_networkStatusLabel = new QLabel("NULL");
+    m_networkStatusLabel = new QLabel;
     m_networkStatusLabel->setFont(QFont("AnyStyle", 10));
-    m_operationStatusLabel = new QLabel("NULL");
+    m_operationStatusLabel = new QLabel;
     m_operationStatusLabel->setFont(QFont("AnyStyle", 10));
 
     // Create status bar
@@ -53,11 +54,26 @@ MainWindow::MainWindow(QWidget *parent)
     statusBar()->addPermanentWidget(m_operationStatusLabel);
 
     // Create menu actions
-    m_learnNetworkAct = new QAction(tr("Learn"), this);
-    m_recognizeSampleAct = new QAction(tr("Recognize"), this);
+    m_hammingNetworkAct = new QAction("Hamming Network", this);
+    m_hammingNetworkAct->setCheckable(true);
+    m_hammingNetworkAct->setChecked(true);
+    m_hebbianNetworkAct = new QAction("Hebbian Network", this);
+    m_hebbianNetworkAct->setCheckable(true);
+    m_hebbianNetworkAct->setChecked(false);
+    m_learnNetworkAct = new QAction("Learn", this);
+    m_recognizeSampleAct = new QAction("Recognize", this);
+
+    // Create action groups
+    m_networksActGroup = new QActionGroup(this);
+    m_networksActGroup->setExclusive(true);
+    m_networksActGroup->addAction(m_hammingNetworkAct);
+    m_networksActGroup->addAction(m_hebbianNetworkAct);
 
     // Create menu
     m_networkMenu = menuBar()->addMenu("Network");
+    m_networkMenu->addAction(m_hammingNetworkAct);
+    m_networkMenu->addAction(m_hebbianNetworkAct);
+    m_networkMenu->addSeparator();
     m_networkMenu->addAction(m_learnNetworkAct);
     m_sampleMenu = menuBar()->addMenu("Sample");
     m_sampleMenu->addAction(m_recognizeSampleAct);
@@ -67,12 +83,15 @@ MainWindow::MainWindow(QWidget *parent)
     widget->setLayout(m_mainLayout);
     setCentralWidget(widget);
     setContentsMargins(5, 5, 5, 5);
+    setNetworkStatus();
 
     // Create connections
     connect(m_toDrawerButton, &QPushButton::clicked, this, &MainWindow::sendToDrawer);
     connect(m_toTableButton, &QPushButton::clicked, this, &MainWindow::sendToTable);
     connect(m_learnNetworkAct, &QAction::triggered, this, &MainWindow::learn);
     connect(m_recognizeSampleAct, &QAction::triggered, this, &MainWindow::recognize);
+    connect(m_hammingNetworkAct, &QAction::triggered, this, &MainWindow::setHammingNetwork);
+    connect(m_hebbianNetworkAct, &QAction::triggered, this, &MainWindow::setHebbianNetwork);
 }
 
 MainWindow::~MainWindow()
@@ -90,6 +109,13 @@ QString MainWindow::buildResultString(const QVector<int> indexes)
     }
 
     return result;
+}
+
+void MainWindow::setNetworkStatus()
+{
+    QString networkName = QString::fromStdString(m_network->getName());
+    QString sizes = m_networkStatusTemplate.arg("NULL").arg("NULL");
+    m_networkStatusLabel->setText(networkName + sizes);
 }
 
 void MainWindow::setNetworkStatus(size_t inputSize, size_t memorySize)
@@ -142,6 +168,9 @@ void MainWindow::learn()
     for (int i = 0; i < memorySize; i++) {
         bipolar = Convertions::toBipolarVector(*model->getImageAt(i));
         samples[i].sample = bipolar;
+
+        samples[i].result = std::vector<double>(memorySize, -1.0);
+        samples[i].result[i] = 1.0;
     }
 
     // Learn network
@@ -180,4 +209,18 @@ void MainWindow::recognize()
     QVector<int> indexes = Utills::getIndexes(indexVec);
     QString resultString = buildResultString(indexes);
     setOperationStatus("Result: " + resultString);
+}
+
+void MainWindow::setHammingNetwork()
+{
+    delete m_network;
+    m_network = new HammingNetwork(1, 1);
+    setNetworkStatus();
+}
+
+void MainWindow::setHebbianNetwork()
+{
+    delete m_network;
+    m_network = new HebbianNetwork(1, 1);
+    setNetworkStatus();
 }
