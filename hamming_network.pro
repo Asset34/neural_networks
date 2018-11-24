@@ -21,7 +21,9 @@ SOURCES += src/main.cpp \
     src/ui/mainwindow.cpp \
     src/utills/convertions.cpp \
     src/utills/utills.cpp \
-    src/hammingnetwork.cpp
+    src/hammingnetwork.cpp \
+    src/hebbiannetwork.cpp \
+    src/neural_network_classes/neuralnetwork.cpp
 
 HEADERS += \
     src/neural_network_classes/entities.hpp \
@@ -39,6 +41,8 @@ HEADERS += \
     src/ui/mainwindow.hpp \
     src/utills/convertions.hpp \
     src/utills/utills.hpp \
-    src/hammingnetwork.hpp
+    src/hammingnetwork.hpp \
+    src/hebbiannetwork.hpp \
+    src/neural_network_classes/neuralnetwork.hpp
 
 INCLUDEPATH += $$PWD/src
