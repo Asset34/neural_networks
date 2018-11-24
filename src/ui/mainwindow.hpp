@@ -10,10 +10,10 @@
 #include <QMenu>
 #include <QAction>
 
+#include <neural_network_classes/neuralnetwork.hpp>
+
 #include <ui/SignedImageList_view_model/signedimagetablemanager.hpp>
 #include <ui/image_drawer/imagedrawerwidget.hpp>
-
-#include "../hammingnetwork.hpp"
 
 class MainWindow : public QMainWindow
 {
@@ -24,12 +24,10 @@ public:
     ~MainWindow();
 
 private:
-    void resetNetwork(size_t inputSize, size_t memorySize);
-
-    QString createResultString(const QVector<int> indexes);
+    QString buildResultString(const QVector<int> indexes);
 
     void setNetworkStatus(size_t inputSize, size_t memorySize);
-    void setStatus(const QString &status);
+    void setOperationStatus(const QString &status);
 
     QHBoxLayout *m_mainLayout;
     QVBoxLayout *m_buttonsLayout;
@@ -38,7 +36,7 @@ private:
     QPushButton *m_toTableButton;
 
     QLabel *m_networkStatusLabel;
-    QLabel *m_statusLabel;
+    QLabel *m_operationStatusLabel;
 
     QMenu *m_networkMenu;
     QMenu *m_sampleMenu;
@@ -49,9 +47,9 @@ private:
     SignedImageTableManager *m_tableManager;
     ImageDrawerWidget *m_drawer;
 
-    QString m_networkStatusTemplate = "Hamming network(input: %1, memory: %2)";
+    QString m_networkStatusTemplate = "(input: %1, memory: %2)";
 
-    HammingNetwork *m_network;
+    NeuralNetwork *m_network;
 
 private slots:
     void sendToDrawer();

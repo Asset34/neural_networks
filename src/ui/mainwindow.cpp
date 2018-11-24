@@ -6,11 +6,14 @@
 #include <memory>
 #include <tuple>
 
+#include "hammingnetwork.hpp"
+
 #include "../utills/convertions.hpp"
+#include "../utills/utills.hpp"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent),
-      m_network(nullptr)
+      m_network(new HammingNetwork(1, 1))
 {
     // Create signed image table manager
     m_tableManager = new SignedImageTableManager(3);
@@ -42,12 +45,12 @@ MainWindow::MainWindow(QWidget *parent)
     // Create status bar labels
     m_networkStatusLabel = new QLabel("NULL");
     m_networkStatusLabel->setFont(QFont("AnyStyle", 10));
-    m_statusLabel = new QLabel("NULL");
-    m_statusLabel->setFont(QFont("AnyStyle", 10));
+    m_operationStatusLabel = new QLabel("NULL");
+    m_operationStatusLabel->setFont(QFont("AnyStyle", 10));
 
     // Create status bar
     statusBar()->addPermanentWidget(m_networkStatusLabel, 1);
-    statusBar()->addPermanentWidget(m_statusLabel);
+    statusBar()->addPermanentWidget(m_operationStatusLabel);
 
     // Create menu actions
     m_learnNetworkAct = new QAction(tr("Learn"), this);
@@ -77,15 +80,7 @@ MainWindow::~MainWindow()
     delete m_network;
 }
 
-void MainWindow::resetNetwork(size_t inputSize, size_t memorySize)
-{
-    delete m_network;
-    m_network = new HammingNetwork(inputSize, memorySize);
-
-    setNetworkStatus(inputSize, memorySize);
-}
-
-QString MainWindow::createResultString(const QVector<int> indexes)
+QString MainWindow::buildResultString(const QVector<int> indexes)
 {
     QString result;
 
@@ -99,18 +94,19 @@ QString MainWindow::createResultString(const QVector<int> indexes)
 
 void MainWindow::setNetworkStatus(size_t inputSize, size_t memorySize)
 {
-    m_networkStatusLabel->setText(m_networkStatusTemplate.arg(inputSize).arg(memorySize));
+    QString networkName = QString::fromStdString(m_network->getName());
+    QString sizes = m_networkStatusTemplate.arg(inputSize).arg(memorySize);
+    m_networkStatusLabel->setText(networkName + sizes);
 }
 
-void MainWindow::setStatus(const QString &status)
+void MainWindow::setOperationStatus(const QString &status)
 {
-    m_statusLabel->setText(status);
+    m_operationStatusLabel->setText(status);
 }
 
 void MainWindow::sendToDrawer()
 {
     std::shared_ptr<QImage> image = m_tableManager->getSelectedImage();
-
     if (image) {
         m_drawer->setImage(*image);
     }
@@ -119,7 +115,6 @@ void MainWindow::sendToDrawer()
 void MainWindow::sendToTable()
 {
     std::shared_ptr<QImage> image = std::make_shared<QImage>(m_drawer->getImage());
-
     m_tableManager->addSignedImage(image);
 }
 
@@ -128,58 +123,61 @@ void MainWindow::learn()
     SignedImageListModel *model = m_tableManager->getModel();
 
     if (!model->rowCount()) {
-        setStatus("Bad training set");
+        setOperationStatus("Learning incomplete (Bad training set)");
         return;
     }
 
-    int inputSize = model->getImageAt(0).get()->width() *
-                    model->getImageAt(0).get()->height();
+    // Compute new network sizes
+    std::shared_ptr<QImage> image = model->getImageAt(0);
+    int inputSize = image.get()->width() * image.get()->height();
     int memorySize = model->rowCount();
 
-    resetNetwork(inputSize, memorySize);
-
-    setStatus("Learning...");
+    m_network->rebuild(inputSize, memorySize);
+    setNetworkStatus(inputSize, memorySize);
 
     // Convert samples to bipolar vectors
-    std::vector<std::vector<double>> trainingSet(memorySize);
+    setOperationStatus("Converting...");
+    std::vector<LearnUnit> samples(memorySize);
+    std::vector<double> bipolar;
     for (int i = 0; i < memorySize; i++) {
-        trainingSet[i] = Convertions::toBipolarVector(*model->getImageAt(i));
+        bipolar = Convertions::toBipolarVector(*model->getImageAt(i));
+        samples[i].sample = bipolar;
     }
 
-    // Learn
-    bool result = m_network->learn(trainingSet);
+    // Learn network
+    setOperationStatus("Learning...");
+    bool result = m_network->learn(samples);
     if (result) {
-        setStatus("Network was successfully learned");
+        setOperationStatus("Learning completed");
     }
     else {
-        setStatus("Bad training set");
+        setOperationStatus("Learning incomplete (Bad training set)");
     }
 }
 
 void MainWindow::recognize()
 {
     if (!m_network) {
-        setStatus("Bad network");
+        setOperationStatus("Recognizing incomplete (Bad training set)");
         return;
     }
 
-    setStatus("Recognizing...");
+    // Convert sample to bipolar vector
+    QImage image = m_drawer->getImage();
+    std::vector<double> bipolar = Convertions::toBipolarVector(image);
 
-    //  Convert sample to bipolar vector
-    std::vector<double> bipolar = Convertions::toBipolarVector(m_drawer->getImage());
-
-    // Recognize
+    // Recognize sample
+    setOperationStatus("Recognizing...");
     std::vector<double> indexVec;
     bool result;
     std::tie(indexVec, result) = m_network->recognize(bipolar);
-
     if (!result) {
-        setStatus("Bad sample");
+        setOperationStatus("Recognizing incomplete (Bad sample)");
         return;
     }
 
+    // Set result signs
     QVector<int> indexes = Utills::getIndexes(indexVec);
-    QString resultString = createResultString(indexes);
-
-    setStatus("Result: " + resultString);
+    QString resultString = buildResultString(indexes);
+    setOperationStatus("Result: " + resultString);
 }
