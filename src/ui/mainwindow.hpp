@@ -13,7 +13,7 @@
 #include <QAction>
 #include <QActionGroup>
 
-#include <neural_network_classes/neuralnetwork.hpp>
+#include <neural_networks/ann_core/neuralnetwork.hpp>
 
 #include <ui/SignedImageList_view_model/signedimagetablemanager.hpp>
 #include <ui/image_drawer/imagedrawerwidget.hpp>

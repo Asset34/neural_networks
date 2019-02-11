@@ -3,14 +3,14 @@
 
 #include <tuple>
 
-#include <neural_network_classes/entities.hpp>
-#include <neural_network_classes/neuron.hpp>
-#include <neural_network_classes/inputneuron.hpp>
-#include <neural_network_classes/layer.hpp>
-#include <neural_network_classes/inputlayer.hpp>
-#include <neural_network_classes/neuralnetwork.hpp>
+#include "ann_core/entities.hpp"
+#include "ann_core/neuron.hpp"
+#include "ann_core/inputneuron.hpp"
+#include "ann_core/layer.hpp"
+#include "ann_core/inputlayer.hpp"
+#include "ann_core/neuralnetwork.hpp"
 
-#include "utills/utills.hpp"
+#include <utills/utills.hpp>
 
 class HammingNetwork : public NeuralNetwork
 {

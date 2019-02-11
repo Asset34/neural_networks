@@ -6,11 +6,11 @@ TARGET = neural_networks
 TEMPLATE = app
 
 SOURCES += src/main.cpp \
-    src/neural_network_classes/synapse.cpp \
-    src/neural_network_classes/neuron.cpp \
-    src/neural_network_classes/inputneuron.cpp \
-    src/neural_network_classes/layer.cpp \
-    src/neural_network_classes/inputlayer.cpp \
+    src/neural_networks/ann_core/synapse.cpp \
+    src/neural_networks/ann_core/neuron.cpp \
+    src/neural_networks/ann_core/inputneuron.cpp \
+    src/neural_networks/ann_core/layer.cpp \
+    src/neural_networks/ann_core/inputlayer.cpp \
     src/ui/SignedImageList_view_model/signedimagelistmodel.cpp \
     src/ui/SignedImageList_view_model/signedimagetableproxymodel.cpp \
     src/ui/SignedImageList_view_model/signedimageitemdelegate.cpp \
@@ -21,16 +21,16 @@ SOURCES += src/main.cpp \
     src/ui/mainwindow.cpp \
     src/utills/convertions.cpp \
     src/utills/utills.cpp \
-    src/hammingnetwork.cpp \
-    src/hebbiannetwork.cpp \
-    src/neural_network_classes/neuralnetwork.cpp
+    src/neural_networks/hammingnetwork.cpp \
+    src/neural_networks/hebbiannetwork.cpp \
+    src/neural_networks/ann_core/neuralnetwork.cpp
 
 HEADERS += \
-    src/neural_network_classes/entities.hpp \
-    src/neural_network_classes/neuron.hpp \
-    src/neural_network_classes/inputneuron.hpp \
-    src/neural_network_classes/layer.hpp \
-    src/neural_network_classes/inputlayer.hpp \
+    src/neural_networks/ann_core/entities.hpp \
+    src/neural_networks/ann_core/neuron.hpp \
+    src/neural_networks/ann_core/inputneuron.hpp \
+    src/neural_networks/ann_core/layer.hpp \
+    src/neural_networks/ann_core/inputlayer.hpp \
     src/ui/SignedImageList_view_model/signedimagelistmodel.hpp \
     src/ui/SignedImageList_view_model/signedimagetableproxymodel.hpp \
     src/ui/SignedImageList_view_model/signedimageitemdelegate.hpp \
@@ -41,8 +41,8 @@ HEADERS += \
     src/ui/mainwindow.hpp \
     src/utills/convertions.hpp \
     src/utills/utills.hpp \
-    src/hammingnetwork.hpp \
-    src/hebbiannetwork.hpp \
-    src/neural_network_classes/neuralnetwork.hpp
+    src/neural_networks/hammingnetwork.hpp \
+    src/neural_networks/hebbiannetwork.hpp \
+    src/neural_networks/ann_core/neuralnetwork.hpp
 
 INCLUDEPATH += $$PWD/src

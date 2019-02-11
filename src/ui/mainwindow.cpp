@@ -6,11 +6,11 @@
 #include <memory>
 #include <tuple>
 
-#include "hammingnetwork.hpp"
-#include "hebbiannetwork.hpp"
+#include <neural_networks/hammingnetwork.hpp>
+#include <neural_networks/hebbiannetwork.hpp>
 
-#include "../utills/convertions.hpp"
-#include "../utills/utills.hpp"
+#include <utills/convertions.hpp>
+#include <utills/utills.hpp>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent),

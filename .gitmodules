@@ -1,9 +1,6 @@
 [submodule "src/ui/SignedImageList_view_model"]
 	path = src/ui/SignedImageList_view_model
 	url = git@github.com:Asset34/SignedImageList_view_model.git
-[submodule "src/ui/image_drawer"]
-	path = src/ui/image_drawer
-	url = git@github.com:Asset34/image_drawer.git
-[submodule "src/neural_network_classes"]
-	path = src/neural_network_classes
-	url = git@github.com:Asset34/neural_network_classes.git
+[submodule "src/neural_networks/ann_core"]
+	path = src/neural_networks/ann_core
+	url = git@github.com:asset34/ann_core.git

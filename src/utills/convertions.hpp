@@ -3,7 +3,7 @@
 
 #include <QImage>
 
-#include <neural_network_classes//entities.hpp>
+#include <neural_networks/ann_core/entities.hpp>
 
 namespace Convertions {
 
